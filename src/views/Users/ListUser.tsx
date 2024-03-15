@@ -1,7 +1,7 @@
-import axios from "axios";
 import React from "react";
 import CardUser from "./components/CardUsers";
 import "./ListUser.scss";
+import { fetchAllUsers } from "../../services/UserService";
 
 export type User = {
   id: number;
@@ -25,18 +25,15 @@ class ListUser extends React.Component<ListUserProps, ListUserState> {
     };
   }
 
-  componentDidMount = () => {
-    axios
-      .get("https://reqres.in/api/users?page=1")
+  componentDidMount = async () => {
+    await fetchAllUsers()
       .then((res) => {
-        this.setState({
-          listUser: [...res?.data?.data],
-        });
-        console.log("Res: ", res);
-
-        console.log("Array when call api", this.state.listUser);
-
-        console.log(typeof this.state.listUser);
+        console.log("List users: ", res.data);
+        if (res && res.data) {
+          this.setState({
+            listUser: [...res?.data],
+          });
+        }
       })
       .catch((err: any) => {
         console.log("Get users error: ", err);

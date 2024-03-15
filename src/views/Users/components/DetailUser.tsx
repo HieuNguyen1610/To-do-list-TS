@@ -1,22 +1,23 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { User } from "../ListUser";
+import { fetchUser } from "../../../services/UserService";
 
 function DetailUser() {
   const { id } = useParams();
   const [user, setUser] = useState<User>();
   useEffect(() => {
-    setTimeout(() => {
-      axios
-        .get(`https://reqres.in/api/users/${id}`)
+    setTimeout(async () => {
+      await fetchUser(id)
         .then((res) => {
-          setUser(res?.data?.data);
+          if (res && res.data) {
+            setUser(res?.data);
+          }
         })
         .catch((err) => {
-          console.log("Detail user error: ", err);
+          console.log("Get user error: ", err);
         });
-    }, 1500);
+    }, 1000);
   }, [user]);
 
   return (
