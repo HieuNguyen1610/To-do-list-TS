@@ -1,7 +1,7 @@
 import axios from './axios/InstanceAxios'
 
-const fetchAllUsers = () => {
-    return axios.get('api/users?page=1')
+const fetchAllUsers = (page:number) => {
+    return axios.get(`api/users?page=${page}`)
 }
 
 const fetchUser = (id:any) => {
